@@ -11,6 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace API.Controllers
 {
@@ -31,7 +32,9 @@ namespace API.Controllers
 
         [HttpPost("new")]
         [AllowAnonymous]
-        public async Task<ActionResult> Register(RegisterUserDto registerUser)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<IdentityUser>> Register(RegisterUserDto registerUser)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState.Values.SelectMany(e => e.Errors));
 
@@ -46,26 +49,21 @@ namespace API.Controllers
 
             if (!result.Succeeded) return BadRequest(result.Errors);
 
-            // await _signInManger.SignInAsync(user, false);
-
-            // return Ok(await GenerateJwt(registerUser.Email));
             return Created("GetUser", user);
         }
 
         [HttpPost("login")]
         [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Login(LoginUser loginUser)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState.Values.SelectMany(e => e.Errors));
 
-            // var result = await _signInManger.PasswordSignInAsync(loginUser.Email, loginUser.Password, false, true);
             var user = await _userManager.FindByEmailAsync(loginUser.Email);
             var result = await _signInManger.CheckPasswordSignInAsync(user, loginUser.Password, false);
 
-            if (result.Succeeded)
-            {
-                return Ok(await GenerateJwt(loginUser.Email));
-            }
+            if (result.Succeeded) return Ok(await GenerateJwt(loginUser.Email));
 
             return BadRequest("Usuário ou senha incorretos");
         }

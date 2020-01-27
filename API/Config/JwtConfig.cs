@@ -10,15 +10,15 @@ namespace API.Config
 {
     public static class JwtConfig
     {
-        public static void AddJwtConfig(this IServiceCollection services, IConfiguration configuration)
+        public static void AddJwtConfig(this IServiceCollection service, IConfiguration configuration)
         {
             var appSettingsSection = configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettingsSection);
+            service.Configure<AppSettings>(appSettingsSection);
             var appSettings = appSettingsSection.Get<AppSettings>();
 
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            service.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(x =>
                 {
                     x.RequireHttpsMetadata = true;
@@ -35,28 +35,6 @@ namespace API.Config
                         ValidAudience = appSettings.ValidoEm
                     };
                 });
-
-            // services.AddAuthentication(auth =>
-            // {
-            //     auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //     auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            // }).AddJwtBearer(token =>
-            // {
-            //     token.RequireHttpsMetadata = false;
-            //     token.SaveToken = true;
-            //     token.TokenValidationParameters = new TokenValidationParameters
-            //     {
-            //         ValidateIssuerSigningKey = true,
-            //         IssuerSigningKey = new SymmetricSecurityKey(key),
-            //         ValidateIssuer = true,
-            //         ValidIssuer = appSettings.ValidoEm,
-            //         ValidateAudience = true,
-            //         ValidAudience = appSettings.Emissor,
-            //         RequireExpirationTime = true,
-            //         ValidateLifetime = true,
-            //         ClockSkew = TimeSpan.Zero
-            //     };
-            // });
         }
     }
 

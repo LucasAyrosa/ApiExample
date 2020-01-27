@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ToDoAPI.API.Config
 {
@@ -15,49 +17,98 @@ namespace ToDoAPI.API.Config
     {
         public static void AddSwaggerConfig(this IServiceCollection service, IConfiguration configuration)
         {
-            service.AddSwaggerGen(c =>
+            var swaggerInfoSection = configuration.GetSection("SwaggerInfo");
+            service.Configure<SwaggerInfo>(swaggerInfoSection);
+            var swaggerInfo = swaggerInfoSection.Get<SwaggerInfo>();
+
+            service.AddSwaggerGen(swaggerGen =>
              {
-                 var swaggerInfo = configuration.GetSection("SwaggerInfo");
-                 var swaggerContact = swaggerInfo.GetSection("Contact");
-                 var swaggerLicense = swaggerInfo.GetSection("License");
-                 c.SwaggerDoc(swaggerInfo.GetValue<string>("Version"), new OpenApiInfo
+                 swaggerGen.SwaggerDoc(swaggerInfo.Version, new OpenApiInfo
                  {
-                     Title = swaggerInfo.GetValue<string>("Title"),
-                     Version = swaggerInfo.GetValue<string>("Version"),
-                     Description = swaggerInfo.GetValue<string>("Description"),
+                     Title = swaggerInfo.Title,
+                     Version = swaggerInfo.Version,
+                     Description = swaggerInfo.Description,
                      Contact = new OpenApiContact
                      {
-                         Name = swaggerContact.GetValue<string>("Name"),
-                         Email = swaggerContact.GetValue<string>("Email"),
-                         Url = new Uri(swaggerContact.GetValue<string>("Url"))
+                         Name = swaggerInfo.Contact.Name,
+                         Email = swaggerInfo.Contact.Email,
+                         Url = new Uri(swaggerInfo.Contact.Url)
                      },
                      License = new OpenApiLicense
                      {
-                         Name = swaggerLicense.GetValue<string>("Name")
+                         Name = swaggerInfo.License.Name
+                     }
+                 });
+
+                 swaggerGen.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                 {
+                     Description = "Cabeçalho de autorização JWT usando esquema Bearer. \r\n\r\n Digite 'Bearer' [espaço] e o seu token na caixa de texto abaixo.\r\n\r\nExemplo: \"Bearer 12345abcdef\"",
+                     Name = "Authorization",
+                     In = ParameterLocation.Header,
+                     Type = SecuritySchemeType.ApiKey,
+                     Scheme = "Bearer"
+                 });
+                 swaggerGen.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                 {
+                     {
+                         new OpenApiSecurityScheme
+                         {
+                             Reference = new OpenApiReference
+                             {
+                                 Type = ReferenceType.SecurityScheme,
+                                 Id = "Bearer"
+                             },
+                             Scheme = "oauth2",
+                             Name = "Bearer",
+                             In = ParameterLocation.Header
+                         },
+                         new List<string>()
                      }
                  });
 
                  var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                  var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                 c.IncludeXmlComments(xmlPath);
+                 swaggerGen.IncludeXmlComments(xmlPath);
              });
         }
 
         public static void UseSwaggerUIConfig(this IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseSwaggerUI(c =>
+            app.UseSwaggerUI(swaggerUI =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1");
-                c.RoutePrefix = string.Empty;
+                swaggerUI.DisplayRequestDuration();
+                swaggerUI.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1");
+                swaggerUI.RoutePrefix = string.Empty;
                 if (env.IsDevelopment())
                 {
-                    c.SupportedSubmitMethods(new SubmitMethod[] { SubmitMethod.Get, SubmitMethod.Post, SubmitMethod.Put, SubmitMethod.Delete });
+                    swaggerUI.SupportedSubmitMethods(new SubmitMethod[] { SubmitMethod.Get, SubmitMethod.Post, SubmitMethod.Put, SubmitMethod.Delete });
                 }
                 else
                 {
-                    c.SupportedSubmitMethods(new SubmitMethod[] { SubmitMethod.Get });
+                    swaggerUI.SupportedSubmitMethods(new SubmitMethod[] { SubmitMethod.Get });
                 }
             });
         }
+    }
+
+    internal class SwaggerInfo
+    {
+        public string Title { get; set; }
+        public string Version { get; set; }
+        public string Description { get; set; }
+        public SwaggerContact Contact { get; set; }
+        public SwaggerLicense License { get; set; }
+    }
+
+    public class SwaggerLicense
+    {
+        public string Name { get; set; }
+    }
+
+    public class SwaggerContact
+    {
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Url { get; set; }
     }
 }

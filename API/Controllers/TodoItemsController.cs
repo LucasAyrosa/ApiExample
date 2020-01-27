@@ -10,7 +10,6 @@ using System.Linq;
 using AutoMapper;
 using API.Dto;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ToDoAPI.API.Controllers
 {
@@ -30,6 +29,7 @@ namespace ToDoAPI.API.Controllers
 
         // GET: api/TodoItems
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<TodoItemDto>> GetTodoItems([FromQuery] TodoItemFilter filter)
         {
             // var count = _context.TodoItems.CountAsync();
@@ -39,11 +39,9 @@ namespace ToDoAPI.API.Controllers
         }
 
         // GET: api/TodoItems/5
-        /// <summary>
-        /// Get um TodoItem específico
-        /// </summary>
-        /// <param name="id"></param>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<TodoItemDto>> GetTodoItem(long id)
         {
             var todoItem = await _context.TodoItems.FindAsync(id);
@@ -53,15 +51,13 @@ namespace ToDoAPI.API.Controllers
         }
 
         // PUT: api/TodoItems/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
+        [ProducesResponseTypeAttribute(StatusCodes.Status204NoContent)]
+        [ProducesResponseTypeAttribute(StatusCodes.Status400BadRequest)]
+        [ProducesResponseTypeAttribute(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<TodoItemDto>> PutTodoItem(long id, TodoItemDto todoItemDto)
         {
-            if (id != todoItemDto.Id)
-            {
-                return BadRequest();
-            }
+            if (id != todoItemDto.Id || todoItemDto is null) return BadRequest();
 
             TodoItem todoItem = _mapper.Map<TodoItem>(todoItemDto);
             _context.Entry(todoItem).State = EntityState.Modified;
@@ -86,26 +82,6 @@ namespace ToDoAPI.API.Controllers
         }
 
         // POST: api/TodoItems
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        /// <summary>
-        /// Creates a TodoItem.
-        /// </summary>
-        /// <remarks>
-        /// Sample request:
-        ///
-        ///     POST /Todo
-        ///     {
-        ///        "id": 1,
-        ///        "name": "Item1",
-        ///        "isComplete": true
-        ///     }
-        ///
-        /// </remarks>
-        /// <param name="todoItemDto"></param>
-        /// <returns>A newly created TodoItem</returns>
-        /// <response code="201">Returns the newly created item</response>
-        /// <response code="400">If the item is null</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -121,13 +97,12 @@ namespace ToDoAPI.API.Controllers
 
         // DELETE: api/TodoItems/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<TodoItemDto>> DeleteTodoItem(long id)
         {
             var todoItem = await _context.TodoItems.FindAsync(id);
-            if (todoItem == null)
-            {
-                return NotFound();
-            }
+            if (todoItem is null) return NotFound();
 
             _context.TodoItems.Remove(todoItem);
             await _context.SaveChangesAsync();
