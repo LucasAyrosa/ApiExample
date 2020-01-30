@@ -1,0 +1,5 @@
+{
+  "dotnet-test-explorer.testProjectPath": "TodoApiTest/TodoApiTest.csproj",
+  "dotnet-test-explorer.autoWatch": true,
+  "dotnet-test-explorer.autoExpandTree": true
+}

@@ -13,7 +13,6 @@ using System.Collections.Generic;
 
 namespace ToDoAPI.API.Controllers
 {
-    [Produces("application/json")]
     [ApiController]
     [Route("api/[controller]")]
     public class TodoItemsController : ControllerBase
