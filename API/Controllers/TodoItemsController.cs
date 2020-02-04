@@ -10,6 +10,7 @@ using System.Linq;
 using AutoMapper;
 using API.Dto;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace ToDoAPI.API.Controllers
 {
@@ -32,6 +33,7 @@ namespace ToDoAPI.API.Controllers
         public async Task<ActionResult<TodoItemDto>> GetTodoItems([FromQuery] TodoItemFilter filter)
         {
             // var count = _context.TodoItems.CountAsync();
+            // var user = User.Claims.Where(c => c.Type == ClaimTypes.Name).FirstOrDefault();
             var todoItems = await _context.TodoItems.Apply(filter).ToListAsync();
             var todoItemDto = _mapper.Map<List<TodoItemDto>>(todoItems);
             return Ok(todoItemDto);

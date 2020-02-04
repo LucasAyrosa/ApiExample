@@ -20,6 +20,7 @@ namespace TodoApiTest.Config
                 {
                     options.UseInMemoryDatabase("TodoItemsTest");
                 });
+
                 var sp = services.BuildServiceProvider();
 
                 using (var scope = sp.CreateScope())
@@ -28,15 +29,17 @@ namespace TodoApiTest.Config
                     var db = scopedServices.GetRequiredService<TodoContext>();
                     var logger = scopedServices.GetRequiredService<ILogger<TodoApplicationFactory<TStartup>>>();
 
-                    db.Database.EnsureCreated();
 
-                    try
+                    if (db.Database.EnsureCreated())
                     {
-                        Utilities.ReinitializeDbForTests(db);
-                    }
-                    catch (System.Exception)
-                    {
-                        throw;
+                        try
+                        {
+                            Utilities.InitializeDbForTests(db);
+                        }
+                        catch (System.Exception)
+                        {
+                            throw;
+                        }
                     }
                 }
             });

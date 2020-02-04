@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using ToDoAPI.Data.Repository;
@@ -40,11 +39,10 @@ namespace TodoApiTest.Config
             {
                 new IdentityUser
                 {
-                    // Id = "add901b2-853c-401d-8773-52cd2bd8e638",
-                    UserName = "user@example.com",
-                    NormalizedUserName = "USER@EXAMPLE.COM",
-                    Email = "user@example.com",
-                    NormalizedEmail = "USER@EXAMPLE.COM",
+                    UserName = "lucas@example.com",
+                    NormalizedUserName = "LUCAS@EXAMPLE.COM",
+                    Email = "lucas@example.com",
+                    NormalizedEmail = "LUCAS@EXAMPLE.COM",
                     EmailConfirmed = true,
                     PasswordHash = "AQAAAAEAACcQAAAAECY+f5AWBnLghiWAuINMFXRF5pQreUutlkfXdF+hmpKADELXYfXIsh47EcOtkvDIdA==",
                     SecurityStamp = "22IBRSRMSJEGUI2342JJIVACRKPO5OXU",
@@ -55,6 +53,23 @@ namespace TodoApiTest.Config
                     LockoutEnd = null,
                     LockoutEnabled = true,
                     AccessFailedCount = 0
+                },
+                new IdentityUser
+                {
+                    UserName= "ayrosa@email.com",
+                    NormalizedUserName= "AYROSA@EMAIL.COM",
+                    Email= "ayrosa@email.com",
+                    NormalizedEmail= "AYROSA@EMAIL.COM",
+                    EmailConfirmed= true,
+                    PasswordHash= "AQAAAAEAACcQAAAAEI0oxx7ob36fW+OMAp//GjBSRMHq682xZx5TAXiQNeLWrsXXpEQOqhzsChN/8rKBKA==",
+                    SecurityStamp= "EHOVUQT7SBHIA3SW63FIJVNFNHSJFGFS",
+                    ConcurrencyStamp= "0125ec9f-bb6a-41c5-a852-9e6b5fa76a7f",
+                    PhoneNumber= null,
+                    PhoneNumberConfirmed= false,
+                    TwoFactorEnabled= false,
+                    LockoutEnd= null,
+                    LockoutEnabled= true,
+                    AccessFailedCount= 0
                 }
             };
         }

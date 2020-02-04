@@ -61,10 +61,10 @@ namespace API.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState.Values.SelectMany(e => e.Errors));
 
             var user = await _userManager.FindByEmailAsync(loginUser.Email);
+            if (user is null) return BadRequest("Usuário ou senha incorretos");
+
             var result = await _signInManger.CheckPasswordSignInAsync(user, loginUser.Password, false);
-
             if (result.Succeeded) return Ok(await GenerateJwt(loginUser.Email));
-
             return BadRequest("Usuário ou senha incorretos");
         }
 
@@ -73,18 +73,22 @@ namespace API.Controllers
             var user = await _userManager.FindByEmailAsync(email);
 
             var identityClaims = new ClaimsIdentity();
+
             identityClaims.AddClaims(await _userManager.GetClaimsAsync(user));
+            identityClaims.AddClaims(new[]
+            {
+                new Claim(ClaimTypes.Name, user.Id),
+            });
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = identityClaims,
-
                 // Subject = new ClaimsIdentity(new []
                 // {
                 //     new Claim(ClaimTypes.Name, user.Id)
-                // });
+                // }),
                 Issuer = _appSettings.Emissor,
                 Audience = _appSettings.ValidoEm,
                 Expires = DateTime.UtcNow.AddHours(_appSettings.ExpiracaoHoras),
