@@ -9,7 +9,7 @@ using ToDoAPI;
 using TodoApiTest.Config;
 using Xunit;
 
-namespace TodoApiTest.Tests
+namespace TodoApiTest.Tests.Controllers
 {
     public class UserTests : IClassFixture<TodoApplicationFactory<Startup>>
     {

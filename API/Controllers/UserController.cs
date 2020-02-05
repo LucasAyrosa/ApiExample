@@ -85,10 +85,6 @@ namespace API.Controllers
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = identityClaims,
-                // Subject = new ClaimsIdentity(new []
-                // {
-                //     new Claim(ClaimTypes.Name, user.Id)
-                // }),
                 Issuer = _appSettings.Emissor,
                 Audience = _appSettings.ValidoEm,
                 Expires = DateTime.UtcNow.AddHours(_appSettings.ExpiracaoHoras),

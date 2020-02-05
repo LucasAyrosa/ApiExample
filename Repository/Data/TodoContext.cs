@@ -1,9 +1,8 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ToDoAPI.Domain.Models;
 
-namespace ToDoAPI.Data.Repository
+namespace ToDoAPI.Repository.Data
 {
     public class TodoContext : IdentityDbContext
     {

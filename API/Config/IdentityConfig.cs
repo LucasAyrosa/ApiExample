@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using ToDoAPI.Data.Repository;
+using ToDoAPI.Repository.Data;
 
 namespace API.Config
 {

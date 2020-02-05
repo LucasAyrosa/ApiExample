@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ToDoAPI.Data.Repository;
+using ToDoAPI.Repository.Data;
 
 namespace TodoApiTest.Config
 {

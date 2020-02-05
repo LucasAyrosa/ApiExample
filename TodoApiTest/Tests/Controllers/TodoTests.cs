@@ -15,7 +15,7 @@ using ToDoAPI;
 using TodoApiTest.Config;
 using Xunit;
 
-namespace TodoApiTest.Tests
+namespace TodoApiTest.Tests.Controllers
 {
     public class TodoTests : IClassFixture<TodoApplicationFactory<Startup>>
     {
@@ -294,7 +294,7 @@ namespace TodoApiTest.Tests
             {
                 Id = 100,
                 Name = "Dar comida para os peixes",
-                IsComplete = true,
+                IsComplete = true
             };
             //When
             var response = await client.PutAsync(todoItem.Id.ToString(), new StringContent(JsonConvert.SerializeObject(todoItem), Encoding.UTF8, "application/json"));

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
-using ToDoAPI.Data.Repository;
 using ToDoAPI.Domain.Models;
+using ToDoAPI.Repository.Data;
 
 namespace TodoApiTest.Config
 {

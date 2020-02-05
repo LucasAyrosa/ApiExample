@@ -5,11 +5,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ToDoAPI.API.Config;
-using ToDoAPI.Data.Repository;
 using API.Config;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.IdentityModel.Logging;
+using ToDoAPI.Repository.Data;
 
 namespace ToDoAPI
 {
@@ -29,6 +29,7 @@ namespace ToDoAPI
             services.AddIdentityConfig();
             services.AddJwtConfig(Configuration);
             IdentityModelEventSource.ShowPII = true;
+            services.AddScoped<TodoItemRepository>();
             services.AddAutoMapperConfig();
             services.AddSwaggerConfig(Configuration);
             services.AddCors();
