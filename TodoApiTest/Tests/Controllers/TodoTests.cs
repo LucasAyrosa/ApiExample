@@ -85,14 +85,20 @@ namespace TodoApiTest.Tests.Controllers
             if (limit != null) queryString.Add("limit", limit.ToString());
             //When
             var response = await client.GetAsync(QueryHelpers.AddQueryString("", queryString));
-            // var response = await client.GetAsync("");
             var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<List<TodoItemDto>>(content);
             //Then
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            if (name != null) Assert.All(result, ti => ti.Name.Contains(name));
+            if (isComplete != null) Assert.All(result, ti => ti.IsComplete.CompareTo(isComplete));
+            if (limit > 0) Assert.True(result.Count <= limit);
         }
 
-        [Fact]
-        public async void GetId_Ok()
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        public async void GetId_Ok(long id)
         {
             //Given
             var client = _factory.WithWebHostBuilder(builder =>
@@ -108,9 +114,12 @@ namespace TodoApiTest.Tests.Controllers
             });
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test");
             //When
-            var response = await client.GetAsync("1");
+            var response = await client.GetAsync(id.ToString());
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<TodoItemDto>(content);
             //Then
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(id, result.Id);
         }
 
         [Fact]
@@ -177,8 +186,13 @@ namespace TodoApiTest.Tests.Controllers
             };
             //When
             var response = await client.PostAsync("", new StringContent(JsonConvert.SerializeObject(todoItem), Encoding.UTF8, "application/json"));
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<TodoItemDto>(content);
             //Then
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.True(result.Id > 0);
+            Assert.Equal(todoItem.Name, result.Name);
+            Assert.Equal(todoItem.IsComplete, result.IsComplete);
         }
 
         [Fact]
