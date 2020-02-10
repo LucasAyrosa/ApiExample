@@ -15,8 +15,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly SignInManager<IdentityUser> _signInManger;

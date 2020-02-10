@@ -26,7 +26,7 @@ namespace TodoApiTest.Tests.Controllers
             _factory = factory;
             _client = _factory.CreateClient(new WebApplicationFactoryClientOptions
             {
-                BaseAddress = new Uri("http://localhost/api/TodoItems/")
+                BaseAddress = new Uri("http://localhost/api/v1/TodoItems/")
             });
         }
 
@@ -73,7 +73,7 @@ namespace TodoApiTest.Tests.Controllers
                    });
                }).CreateClient(new WebApplicationFactoryClientOptions
                {
-                   BaseAddress = new Uri("http://localhost/api/TodoItems/")
+                   BaseAddress = new Uri("http://localhost/api/v1/TodoItems/")
                });
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test");
 
@@ -110,7 +110,7 @@ namespace TodoApiTest.Tests.Controllers
                 });
             }).CreateClient(new WebApplicationFactoryClientOptions
             {
-                BaseAddress = new Uri("http://localhost/api/TodoItems/")
+                BaseAddress = new Uri("http://localhost/api/v1/TodoItems/")
             });
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test");
             //When
@@ -135,7 +135,7 @@ namespace TodoApiTest.Tests.Controllers
                 });
             }).CreateClient(new WebApplicationFactoryClientOptions
             {
-                BaseAddress = new Uri("http://localhost/api/TodoItems/")
+                BaseAddress = new Uri("http://localhost/api/v1/TodoItems/")
             });
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test");
             //When
@@ -176,7 +176,7 @@ namespace TodoApiTest.Tests.Controllers
                 });
             }).CreateClient(new WebApplicationFactoryClientOptions
             {
-                BaseAddress = new Uri("http://localhost/api/TodoItems/")
+                BaseAddress = new Uri("http://localhost/api/v1/TodoItems/")
             });
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test");
             var todoItem = new TodoItemDto
@@ -207,7 +207,7 @@ namespace TodoApiTest.Tests.Controllers
                     });
                 }).CreateClient(new WebApplicationFactoryClientOptions
                 {
-                    BaseAddress = new Uri("http://localhost/api/TodoItems/")
+                    BaseAddress = new Uri("http://localhost/api/v1/TodoItems/")
                 });
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test");
             var todoItem = new TodoItemDto();
@@ -248,7 +248,7 @@ namespace TodoApiTest.Tests.Controllers
                 });
             }).CreateClient(new WebApplicationFactoryClientOptions
             {
-                BaseAddress = new Uri("http://localhost/api/TodoItems/")
+                BaseAddress = new Uri("http://localhost/api/v1/TodoItems/")
             });
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test");
             var todoItem = new TodoItemDto
@@ -275,7 +275,7 @@ namespace TodoApiTest.Tests.Controllers
                 });
             }).CreateClient(new WebApplicationFactoryClientOptions
             {
-                BaseAddress = new Uri("http://localhost/api/TodoItems/")
+                BaseAddress = new Uri("http://localhost/api/v1/TodoItems/")
             });
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test");
             var todoItem = new TodoItemDto
@@ -301,7 +301,7 @@ namespace TodoApiTest.Tests.Controllers
                 });
             }).CreateClient(new WebApplicationFactoryClientOptions
             {
-                BaseAddress = new Uri("http://localhost/api/TodoItems/")
+                BaseAddress = new Uri("http://localhost/api/v1/TodoItems/")
             });
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test");
             var todoItem = new TodoItemDto
@@ -342,7 +342,7 @@ namespace TodoApiTest.Tests.Controllers
                     });
                 }).CreateClient(new WebApplicationFactoryClientOptions
                 {
-                    BaseAddress = new Uri("http://localhost/api/TodoItems/")
+                    BaseAddress = new Uri("http://localhost/api/v1/TodoItems/")
                 });
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test");
             //When
@@ -363,7 +363,7 @@ namespace TodoApiTest.Tests.Controllers
                     });
                 }).CreateClient(new WebApplicationFactoryClientOptions
                 {
-                    BaseAddress = new Uri("http://localhost/api/TodoItems/")
+                    BaseAddress = new Uri("http://localhost/api/v1/TodoItems/")
                 });
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test");
             //When

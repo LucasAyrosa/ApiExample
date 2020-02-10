@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace ToDoAPI.API.Config
 {
@@ -72,12 +73,15 @@ namespace ToDoAPI.API.Config
              });
         }
 
-        public static void UseSwaggerUIConfig(this IApplicationBuilder app, IWebHostEnvironment env)
+        public static void UseSwaggerUIConfig(this IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
             app.UseSwaggerUI(swaggerUI =>
             {
                 swaggerUI.DisplayRequestDuration();
-                swaggerUI.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1");
+                foreach (var description in provider.ApiVersionDescriptions)
+                {
+                    swaggerUI.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                }
                 swaggerUI.RoutePrefix = string.Empty;
                 if (env.IsDevelopment())
                 {

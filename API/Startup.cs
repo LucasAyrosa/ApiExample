@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.IdentityModel.Logging;
 using ToDoAPI.Repository.Data;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace ToDoAPI
 {
@@ -32,6 +34,8 @@ namespace ToDoAPI
             services.AddScoped<TodoItemRepository>();
             services.AddAutoMapperConfig();
             services.AddSwaggerConfig(Configuration);
+            services.AddApiVersioningConfig();
+            services.AddVersionedApiExplorerConfig();
             services.AddCors();
             services.AddControllers(config =>
             {
@@ -42,7 +46,7 @@ namespace ToDoAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
             if (env.IsDevelopment())
             {
@@ -50,7 +54,7 @@ namespace ToDoAPI
             }
 
             app.UseSwagger();
-            app.UseSwaggerUIConfig(env);
+            app.UseSwaggerUIConfig(env, provider);
             app.UseStaticFiles();
 
             // app.UseHttpsRedirection();

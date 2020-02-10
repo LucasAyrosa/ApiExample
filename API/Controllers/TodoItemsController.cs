@@ -13,7 +13,8 @@ using ToDoAPI.Repository.Data;
 namespace ToDoAPI.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class TodoItemsController : ControllerBase
     {
         private readonly TodoItemRepository _repo;
@@ -77,13 +78,13 @@ namespace ToDoAPI.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<TodoItemDto>> PostTodoItem(TodoItemDto todoItemDto)
+        public async Task<ActionResult<TodoItemDto>> PostTodoItem(TodoItemDto todoItemDto, ApiVersion apiVersion)
         {
             if (!ModelState.IsValid) return BadRequest();
             var todoItem = _mapper.Map<TodoItem>(todoItemDto);
             _repo.Add(todoItem);
             await _repo.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, todoItem);
+            return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id, version = apiVersion.ToString() }, todoItem);
         }
 
         // DELETE: api/TodoItems/5

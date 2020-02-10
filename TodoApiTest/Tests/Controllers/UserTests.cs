@@ -20,7 +20,7 @@ namespace TodoApiTest.Tests.Controllers
             _factory = factory;
             _client = _factory.CreateClient(new WebApplicationFactoryClientOptions
             {
-                BaseAddress = new Uri("http://localhost/api/User/")
+                BaseAddress = new Uri("http://localhost/api/v1/User/")
             });
         }
 
