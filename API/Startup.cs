@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.IdentityModel.Logging;
 using ToDoAPI.Repository.Data;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace ToDoAPI
@@ -36,6 +35,7 @@ namespace ToDoAPI
             services.AddSwaggerConfig(Configuration);
             services.AddApiVersioningConfig();
             services.AddVersionedApiExplorerConfig();
+            services.AddGraphQLConfig();
             services.AddCors();
             services.AddControllers(config =>
             {
