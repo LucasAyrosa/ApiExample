@@ -23,7 +23,6 @@ namespace API.Controllers.GraphQL
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody] GraphQLQueryDto query)
         {
             var result = await _documentExecuter.ExecuteAsync(_ =>
