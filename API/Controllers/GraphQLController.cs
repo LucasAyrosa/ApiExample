@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Dto.GraphQL;
@@ -29,12 +30,13 @@ namespace API.Controllers.GraphQL
             {
                 _.Schema = _schema;
                 _.Query = query.Query;
+                _.ExposeExceptions = true;
                 _.Inputs = query.Variables?.ToInputs();
             }).ConfigureAwait(false);
             var t = result.Data;
             if (result.Errors?.Count > 0)
             {
-                return Problem(detail: result.Errors.Select(_ => _.Message).FirstOrDefault(), statusCode: StatusCodes.Status500InternalServerError);
+                return Problem(statusCode: Int32.Parse(result.Errors.Select(_ => _.Message).FirstOrDefault()));
             }
             return Ok(result.Data);
         }
