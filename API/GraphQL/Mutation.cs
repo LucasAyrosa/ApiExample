@@ -14,7 +14,7 @@ namespace API.GraphQL
             Field<TodoItemType>("addTodoItem",
                 arguments: new QueryArguments
                 {
-                    new QueryArgument<InputTodoItemType>() {Name = "todoItem"},
+                    new QueryArgument<NonNullGraphType<InputTodoItemType>>() {Name = "todoItem"},
                 },
                 resolve: context =>
                 {
@@ -28,12 +28,13 @@ namespace API.GraphQL
             Field<TodoItemType>("removeTodoItem",
                 arguments: new QueryArguments
                 {
-                    new QueryArgument<StringGraphType>() {Name = "id"}
+                    new QueryArgument<NonNullGraphType<IdGraphType>>() {Name = "id"}
                 },
                 resolve: context =>
                 {
                     var id = context.GetArgument<long>("id");
                     var todoItem = _todoItemRepository.FindAsync(id).GetAwaiter().GetResult();
+                    if (todoItem is null) return "NotFound";
                     _todoItemRepository.Remove(todoItem);
                     _todoItemRepository.SaveChangesAsync().GetAwaiter();
                     return todoItem;
@@ -43,8 +44,8 @@ namespace API.GraphQL
             Field<TodoItemType>("updateTodoItem",
                 arguments: new QueryArguments
                 {
-                    new QueryArgument<IntGraphType>() {Name = "id"},
-                    new QueryArgument<InputTodoItemType>() {Name = "todoItem"}
+                    new QueryArgument<IdGraphType>() {Name = "id"},
+                    new QueryArgument<NonNullGraphType<InputTodoItemType>>() {Name = "todoItem"}
                 },
                 resolve: context =>
                 {

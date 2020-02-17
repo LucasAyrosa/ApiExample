@@ -7,7 +7,7 @@ namespace API.GraphQL.Types
     {
         public TodoItemType()
         {
-            Name = "TodoItemType";
+            Name = "TodoItem";
             Field(ti => ti.Id);
             Field(ti => ti.Name);
             Field(ti => ti.IsComplete);

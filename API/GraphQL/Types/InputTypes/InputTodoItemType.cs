@@ -7,10 +7,10 @@ namespace API.GraphQL.Types.InputTypes
     {
         public InputTodoItemType()
         {
-            Name = "InputTodoItemType";
-            Field(ti => ti.Id);
-            Field(ti => ti.Name);
-            Field(ti => ti.IsComplete);
+            Name = "InputTodoItem";
+            Field(ti => ti.Id, true);
+            Field(ti => ti.Name, false);
+            Field(ti => ti.IsComplete, true);
         }
     }
 }

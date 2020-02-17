@@ -18,14 +18,17 @@ namespace API.GraphQL
             },
             resolve: context =>
             {
-                var id = context.GetArgument<long?>("id");
-                var name = context.GetArgument<string>("name");
-                var isComplete = context.GetArgument<bool?>("isComplete");
-
                 var query = _todoItemRepository.All;
-                if (id != null) query = query.Where(ti => ti.Id == id);
-                if (name != null) query = query.Where(ti => ti.Name.ToUpper().Contains(name.ToUpper()));
-                if (isComplete != null) query = query.Where(ti => ti.IsComplete == isComplete);
+
+                var id = context.GetArgument<long?>("id");
+                if (id.HasValue) query = query.Where(ti => ti.Id == id);
+
+                var name = context.GetArgument<string>("name");
+                if (!string.IsNullOrEmpty(name)) query = query.Where(ti => ti.Name.ToUpper().Contains(name.ToUpper()));
+
+                var isComplete = context.GetArgument<bool?>("isComplete");
+                if (isComplete.HasValue) query = query.Where(ti => ti.IsComplete == isComplete);
+
                 return query.ToList();
             });
         }
