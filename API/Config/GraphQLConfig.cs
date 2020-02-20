@@ -14,10 +14,10 @@ namespace API.Config
             services.AddScoped<IDependencyResolver>(_ => new FuncDependencyResolver(_.GetRequiredService));
             services.AddScoped<Query>();
             services.AddScoped<Mutation>();
+            services.AddScoped<ISchema, MySchema>();
             services.AddSingleton<TodoItemType>();
             services.AddSingleton<InputTodoItemType>();
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
-            services.AddScoped<ISchema, MySchema>();
         }
     }
 }

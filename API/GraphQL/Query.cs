@@ -12,9 +12,9 @@ namespace API.GraphQL
             Field<ListGraphType<TodoItemType>>("todoItems",
             arguments: new QueryArguments
             {
-                new QueryArgument<StringGraphType> {Name = "id"},
+                new QueryArgument<IdGraphType> {Name = "id"},
                 new QueryArgument<StringGraphType> {Name = "name"},
-                new QueryArgument<StringGraphType> {Name = "isComplete"}
+                new QueryArgument<BooleanGraphType> {Name = "isComplete"}
             },
             resolve: context =>
             {
