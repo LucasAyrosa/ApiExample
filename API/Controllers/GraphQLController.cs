@@ -31,7 +31,7 @@ namespace API.Controllers.GraphQL
                 _.Schema = _schema;
                 _.Query = query.Query;
                 _.ExposeExceptions = true;
-                _.Inputs = query.Variables?.ToInputs();
+                _.Inputs = query.Variables?.ToString().ToInputs();
             }).ConfigureAwait(false);
             var t = result.Data;
             if (result.Errors?.Count > 0)

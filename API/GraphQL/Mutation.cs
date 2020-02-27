@@ -47,7 +47,7 @@ namespace API.GraphQL
             Field<TodoItemType>("updateTodoItem",
                 arguments: new QueryArguments
                 {
-                    new QueryArgument<IdGraphType>() {Name = "id"},
+                    new QueryArgument<NonNullGraphType<IdGraphType>>() {Name = "id"},
                     new QueryArgument<NonNullGraphType<InputTodoItemType>>() {Name = "todoItem"}
                 },
                 resolve: context =>
